@@ -1,22 +1,9 @@
 apiVersion: argoproj.io/v1beta1
 kind: ArgoCD
 metadata:
-  name: openshift-gitops
+  name: argocd
   namespace: project-a
 spec:
-  applicationSet:
-    resources:
-      limits:
-        cpu: "2"
-        memory: 1Gi
-      requests:
-        cpu: 250m
-        memory: 512Mi
-    webhookServer:
-      ingress:
-        enabled: false
-      route:
-        enabled: false
   controller:
     processors: {}
     resources:
@@ -27,19 +14,10 @@ spec:
         cpu: 250m
         memory: 1Gi
     sharding: {}
-  extraConfig:
-    controller.sync.timeout.seconds: "10"
   grafana:
     enabled: false
     ingress:
       enabled: false
-    resources:
-      limits:
-        cpu: 500m
-        memory: 256Mi
-      requests:
-        cpu: 250m
-        memory: 128Mi
     route:
       enabled: false
   ha:
@@ -66,7 +44,6 @@ spec:
     defaultPolicy: ""
     policy: |
       g, system:cluster-admins, role:admin
-      g, cluster-admins, role:admin
     scopes: '[groups]'
   redis:
     resources:
@@ -84,14 +61,8 @@ spec:
       requests:
         cpu: 250m
         memory: 256Mi
-  resourceExclusions: |
-    - apiGroups:
-      - tekton.dev
-      clusters:
-      - '*'
-      kinds:
-      - TaskRun
-      - PipelineRun
+  resourceExclusions: "- apiGroups:\n  - tekton.dev\n  clusters:\n  - '*'\n  kinds:\n
+    \ - TaskRun\n  - PipelineRun        \n"
   server:
     autoscale:
       enabled: false
@@ -111,8 +82,6 @@ spec:
       enabled: true
     service:
       type: ""
-  sourceNamespaces:
-  - grp-*
   sso:
     dex:
       openShiftOAuth: true
