@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1beta1
 kind: ArgoCD
 metadata:
   name: argocd
-  namespace: project-a
+  namespace: dev-gitops
 spec:
   controller:
     processors: {}
