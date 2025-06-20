@@ -2,24 +2,16 @@ apiVersion: argoproj.io/v1beta1
 kind: ArgoCD
 metadata:
   name: argocd
-  namespace: dev-gitops
+  namespace: new
 spec:
   controller:
-    processors: {}
     resources:
       limits:
-        cpu: "2"
-        memory: 2Gi
+        cpu: 2000m
+        memory: 2048Mi
       requests:
         cpu: 250m
-        memory: 1Gi
-    sharding: {}
-  grafana:
-    enabled: false
-    ingress:
-      enabled: false
-    route:
-      enabled: false
+        memory: 1024Mi
   ha:
     enabled: false
     resources:
@@ -29,19 +21,8 @@ spec:
       requests:
         cpu: 250m
         memory: 128Mi
-  initialSSHKnownHosts: {}
-  monitoring:
-    enabled: false
-  notifications:
-    enabled: false
-  prometheus:
-    enabled: false
-    ingress:
-      enabled: false
-    route:
-      enabled: false
   rbac:
-    defaultPolicy: ""
+    defaultPolicy: ''
     policy: |
       g, system:cluster-admins, role:admin
     scopes: '[groups]'
@@ -56,21 +37,20 @@ spec:
   repo:
     resources:
       limits:
-        cpu: "1"
-        memory: 1Gi
+        cpu: 1000m
+        memory: 1024Mi
       requests:
         cpu: 250m
         memory: 256Mi
-  resourceExclusions: "- apiGroups:\n  - tekton.dev\n  clusters:\n  - '*'\n  kinds:\n
-    \ - TaskRun\n  - PipelineRun        \n"
+  resourceExclusions: |
+    - apiGroups:
+      - tekton.dev
+      clusters:
+      - '*'
+      kinds:
+      - TaskRun
+      - PipelineRun        
   server:
-    autoscale:
-      enabled: false
-    grpc:
-      ingress:
-        enabled: false
-    ingress:
-      enabled: false
     resources:
       limits:
         cpu: 500m
@@ -80,8 +60,6 @@ spec:
         memory: 128Mi
     route:
       enabled: true
-    service:
-      type: ""
   sso:
     dex:
       openShiftOAuth: true
@@ -93,5 +71,3 @@ spec:
           cpu: 250m
           memory: 128Mi
     provider: dex
-  tls:
-    ca: {}
